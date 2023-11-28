@@ -7,18 +7,19 @@ import java.util.*;
  *
  * @param <T> The type of elements in the collection.
  */
+@SuppressWarnings("unchecked")
 class FlowersCollection<T extends Flowers> implements Set<T> {
   private static final int INITIAL_CAPACITY = 15;
   private static final double GROWTH_FACTOR = 1.3;
 
-  private Object[] elements;
+  private Flowers[] elements;
   private int size;
 
   /**
    * Creates an empty FlowersCollection with the default initial capacity.
    */
   public FlowersCollection() {
-    elements = new Object[INITIAL_CAPACITY];
+    elements = new Flowers[INITIAL_CAPACITY];
     size = 0;
   }
 
@@ -73,7 +74,6 @@ class FlowersCollection<T extends Flowers> implements Set<T> {
       }
 
       @Override
-      @SuppressWarnings("unchecked")
       public T next() {
         if (!hasNext()) {
           throw new NoSuchElementException();
@@ -102,6 +102,10 @@ class FlowersCollection<T extends Flowers> implements Set<T> {
 
   @Override
   public boolean add(T t) {
+    if (t == null) {
+      throw new FlowersCollectionException("Cannot add null element to FlowersCollection");
+    }
+
     ensureCapacity();
     elements[size++] = t;
     return true;
@@ -109,6 +113,10 @@ class FlowersCollection<T extends Flowers> implements Set<T> {
 
   @Override
   public boolean remove(Object o) {
+    if (o == null) {
+      throw new FlowersCollectionException("Cannot remove null element from FlowersCollection");
+    }
+
     for (int i = 0; i < size; i++) {
       if (Objects.equals(elements[i], o)) {
         removeAtIndex(i);
@@ -131,6 +139,9 @@ class FlowersCollection<T extends Flowers> implements Set<T> {
   @Override
   public boolean addAll(Collection<? extends T> c) {
     for (T element : c) {
+      if (element == null) {
+        throw new FlowersCollectionException("Cannot add null element to FlowersCollection");
+      }
       add(element);
     }
     return true;
@@ -153,6 +164,9 @@ class FlowersCollection<T extends Flowers> implements Set<T> {
   public boolean removeAll(Collection<?> c) {
     boolean modified = false;
     for (Object element : c) {
+      if (element == null) {
+        throw new FlowersCollectionException("Cannot remove null element from FlowersCollection");
+      }
       modified |= remove(element);
     }
     return modified;
@@ -160,7 +174,7 @@ class FlowersCollection<T extends Flowers> implements Set<T> {
 
   @Override
   public void clear() {
-    elements = new Object[INITIAL_CAPACITY];
+    elements = new Flowers[INITIAL_CAPACITY];
     size = 0;
   }
 
@@ -172,6 +186,10 @@ class FlowersCollection<T extends Flowers> implements Set<T> {
   }
 
   private void removeAtIndex(int index) {
+    if (index < 0 || index >= size) {
+      throw new FlowersCollectionException("Index: " + index + ", Size: " + size);
+    }
+
     System.arraycopy(elements, index + 1, elements, index, size - index - 1);
     elements[--size] = null;
   }
