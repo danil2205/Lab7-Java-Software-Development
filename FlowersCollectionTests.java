@@ -35,6 +35,15 @@ public class FlowersCollectionTests {
     });
   }
 
+  @Test
+  void testAddDuplicateElement() {
+    FlowersCollection<Flowers> flowersCollection = new FlowersCollection<>();
+    Flowers lilyFresh = new Lily(50, 25, 1);
+    assertThrows(FlowersCollectionException.class, () -> {
+      flowersCollection.add(lilyFresh);
+      flowersCollection.add(lilyFresh);
+    });
+  }
 
   @Test
   void testAddAll() {
@@ -46,6 +55,19 @@ public class FlowersCollectionTests {
 
     assertTrue(flowersCollection.addAll(flowerList));
     assertEquals(2, flowersCollection.size());
+  }
+
+  @Test
+  void testAddAllDuplicateElement() {
+    FlowersCollection<Flowers> flowersCollection = new FlowersCollection<>();
+    Flowers lilyFresh = new Lily(50, 25, 1);
+    Flowers rose = new Rose(150, 20, 1);
+    List<Flowers> flowerList = Arrays.asList(lilyFresh, rose);
+    flowersCollection.addAll(flowerList);
+
+    assertThrows(FlowersCollectionException.class, () -> {
+      flowersCollection.addAll(flowerList);
+    });
   }
 
   @Test
@@ -71,6 +93,8 @@ public class FlowersCollectionTests {
 
     assertTrue(flowersCollection.remove(rose));
     assertTrue(flowersCollection.isEmpty());
+
+    assertFalse(flowersCollection.remove(rose));
   }
 
   @Test
@@ -167,6 +191,9 @@ public class FlowersCollectionTests {
     assertTrue(iterator.hasNext());
     assertEquals(tulip, iterator.next());
     assertFalse(iterator.hasNext());
+    assertThrows(FlowersCollectionException.class, () -> {
+      iterator.next();
+    });
   }
 
   @Test

@@ -76,7 +76,7 @@ class FlowersCollection<T extends Flowers> implements Set<T> {
       @Override
       public T next() {
         if (!hasNext()) {
-          throw new NoSuchElementException();
+          throw new FlowersCollectionException("No such element exception");
         }
         return (T) elements[currentIndex++];
       }
@@ -104,6 +104,10 @@ class FlowersCollection<T extends Flowers> implements Set<T> {
   public boolean add(T t) {
     if (t == null) {
       throw new FlowersCollectionException("Cannot add null element to FlowersCollection");
+    }
+
+    if (contains(t)) {
+      throw new FlowersCollectionException("Cannot add duplicate element to FlowersCollection");
     }
 
     ensureCapacity();
