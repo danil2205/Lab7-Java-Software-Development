@@ -106,9 +106,7 @@ class FlowersCollection<T extends Flowers> implements Set<T> {
       throw new FlowersCollectionException("Cannot add null element to FlowersCollection");
     }
 
-    if (contains(t)) {
-      throw new FlowersCollectionException("Cannot add duplicate element to FlowersCollection");
-    }
+    if (contains(t)) return false;
 
     ensureCapacity();
     elements[size++] = t;
@@ -171,7 +169,7 @@ class FlowersCollection<T extends Flowers> implements Set<T> {
       if (element == null) {
         throw new FlowersCollectionException("Cannot remove null element from FlowersCollection");
       }
-      modified |= remove(element);
+      if (remove(element)) modified = true;
     }
     return modified;
   }

@@ -39,10 +39,11 @@ public class FlowersCollectionTests {
   void testAddDuplicateElement() {
     FlowersCollection<Flowers> flowersCollection = new FlowersCollection<>();
     Flowers lilyFresh = new Lily(50, 25, 1);
-    assertThrows(FlowersCollectionException.class, () -> {
-      flowersCollection.add(lilyFresh);
-      flowersCollection.add(lilyFresh);
-    });
+    flowersCollection.add(lilyFresh);
+    assertEquals(1, flowersCollection.size());
+
+    assertFalse(flowersCollection.add(lilyFresh));
+    assertEquals(1, flowersCollection.size());
   }
 
   @Test
@@ -62,12 +63,11 @@ public class FlowersCollectionTests {
     FlowersCollection<Flowers> flowersCollection = new FlowersCollection<>();
     Flowers lilyFresh = new Lily(50, 25, 1);
     Flowers rose = new Rose(150, 20, 1);
-    List<Flowers> flowerList = Arrays.asList(lilyFresh, rose);
+    Flowers tulip = new Tulip(40, 30, 2);
+    List<Flowers> flowerList = Arrays.asList(lilyFresh, rose, tulip, lilyFresh);
     flowersCollection.addAll(flowerList);
 
-    assertThrows(FlowersCollectionException.class, () -> {
-      flowersCollection.addAll(flowerList);
-    });
+    assertEquals(3, flowersCollection.size());
   }
 
   @Test
